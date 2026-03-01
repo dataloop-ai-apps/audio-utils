@@ -66,6 +66,17 @@
                 }
               ],
               "widget": "dl-input"
+            },
+            {
+              "name": "create_prompt_item",
+              "title": "Create Prompt Item",
+              "props": {
+                "title": true,
+                "type": "boolean",
+                "default": true,
+                "required": false
+              },
+              "widget": "dl-toggle"
             }
           ]
         }
