@@ -1,0 +1,12 @@
+.env
+*ipynb
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pyw
+*.pyz
+
+venv/
+*.vscode/
+*.devcontainer/

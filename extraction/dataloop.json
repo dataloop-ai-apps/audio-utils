@@ -1,0 +1,130 @@
+{
+  "displayName": "[Audio Utils] - Extraction",
+  "name": "audio-utils",
+  "description": "Audio utilities for Dataloop pipelines. Extract audio tracks from video items as PromptItems (mono WAV). Supports configurable sample rate and metadata propagation.",
+  "version": "0.0.1",
+  "attributes": {
+    "Provider": "Dataloop",
+    "Category": "Application",
+    "Media Type": [
+      "Video",
+      "Audio"
+    ],
+    "Application Type": [
+      "Pipeline Node"
+    ],
+    "License": "Apache 2.0"
+  },
+  "scope": "public",
+  "components": {
+    "pipelineNodes": [
+      {
+        "scope": "node",
+        "name": "audio-extraction",
+        "displayName": "Audio Extraction",
+        "description": "Extract audio from a video item as a mono WAV PromptItem. Configurable sample rate and output directory.",
+        "invoke": {
+          "type": "function",
+          "namespace": "audio-extraction.audio-extraction.extract_audio"
+        },
+        "categories": [
+          "audio-utils"
+        ],
+        "configuration": {
+          "fields": [
+            {
+              "name": "output_dir",
+              "title": "Output Directory",
+              "props": {
+                "title": true,
+                "type": "string",
+                "default": "/audio_prompt_items",
+                "required": true,
+                "placeholder": "Insert output directory"
+              },
+              "rules": [
+                {
+                  "type": "required",
+                  "effect": "error"
+                }
+              ],
+              "widget": "dl-input"
+            },
+            {
+              "name": "sample_rate",
+              "title": "Audio Sample Rate (Hz)",
+              "props": {
+                "title": true,
+                "type": "number",
+                "default": 16000,
+                "required": true
+              },
+              "rules": [
+                {
+                  "type": "required",
+                  "effect": "error"
+                }
+              ],
+              "widget": "dl-input"
+            }
+          ]
+        }
+      }
+    ],
+    "modules": [
+      {
+        "name": "audio-extraction",
+        "entryPoint": "extraction/audio_extraction.py",
+        "className": "ServiceRunner",
+        "initInputs": [],
+        "functions": [
+          {
+            "name": "extract_audio",
+            "description": "Extract audio from a video item",
+            "input": [
+              {
+                "type": "Item",
+                "name": "item"
+              }
+            ],
+            "output": [
+              {
+                "type": "Item",
+                "name": "item"
+              }
+            ],
+            "displayIcon": "icon-dl-audio",
+            "displayName": "Audio Extraction"
+          }
+        ]
+      }
+    ],
+    "services": [
+      {
+        "name": "audio-extraction",
+        "moduleName": "audio-extraction",
+        "runtime": {
+          "podType": "regular-s",
+          "runnerImage": "dataloopai/dtlpy-agent:cpu.py3.10.opencv",
+          "numReplicas": 1,
+          "concurrency": 10,
+          "pyPackages": {},
+          "singleAgent": false,
+          "autoscaler": {
+            "type": "rabbitmq",
+            "minReplicas": 0,
+            "maxReplicas": 2,
+            "queueLength": 10
+          },
+          "preemptible": false
+        },
+        "maxAttempts": 3,
+        "executionTimeout": 172800,
+        "drainTime": 600,
+        "onReset": "failed",
+        "runExecutionAsProcess": false,
+        "operation": "none"
+      }
+    ]
+  }
+}
