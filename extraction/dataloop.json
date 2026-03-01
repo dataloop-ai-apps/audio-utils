@@ -2,7 +2,7 @@
   "displayName": "[Audio Utils] - Extraction",
   "name": "audio-utils",
   "description": "Audio utilities for Dataloop pipelines. Extract audio tracks from video items as PromptItems (mono WAV). Supports configurable sample rate and metadata propagation.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "attributes": {
     "Provider": "Dataloop",
     "Category": "Application",
