@@ -54,9 +54,14 @@ class ServiceRunner(dl.BaseServiceRunner):
                     f"Cannot extract audio from a video without an audio track."
                 )
 
+            if create_prompt_item:
+                wav_remote_path = f"{output_dir}/audio_files"
+            else:
+                wav_remote_path = output_dir
+
             audio_item = dataset.items.upload(
                 local_path=audio_path,
-                remote_path=f"{output_dir}/audio_files",
+                remote_path=wav_remote_path,
                 remote_name=audio_name,
                 overwrite=True,
             )
